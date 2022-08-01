@@ -1,0 +1,35 @@
+const isValid = (str) => {
+  let stack = [];
+  const leftArr = ["(", "[", "{"];
+  const matchArr = [
+    ["(", ")"],
+    ["[", "]"],
+    ["{", "}"],
+  ];
+  const matchMethod = (start, end) => {
+    return (
+      (start === ")" && end === "(") ||
+      (start === "]" && end === "[") ||
+      (start === "}" && end === "{")
+    );
+  };
+  for (let i = 0; i < str.length; i++) {
+    const start = str[i];
+    if (leftArr.includes(start)) {
+      stack.push(start);
+    } else {
+      const end = stack[stack.length - 1];
+      if (matchMethod(start, end)) {
+        stack.pop();
+      } else {
+        return false;
+      }
+    }
+  }
+  return stack.length === 0;
+};
+
+console.log(isValid("()"));
+console.log(isValid("()[]{}"));
+console.log(isValid("(]"));
+console.log(isValid("([)]"));
