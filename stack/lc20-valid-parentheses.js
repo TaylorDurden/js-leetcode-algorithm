@@ -37,28 +37,27 @@
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  */
 
-const isValid = (str) => {
-  let stack = [];
-  const leftArr = ['(', '[', '{'];
-  const matchArr = [
-    ['(', ')'],
-    ['[', ']'],
-    ['{', '}'],
-  ];
-  const matchMethod = (start, end) => {
+/**
+ * @param {string} s
+ * @return {boolean}
+ */
+var isValid = function (s) {
+  const stack = [];
+  const leftPar = ['(', '{', '['];
+  const matchMethod = (left, right) => {
     return (
-      (start === ')' && end === '(') ||
-      (start === ']' && end === '[') ||
-      (start === '}' && end === '{')
+      (left === '(' && right === ')') ||
+      (left === '[' && right === ']') ||
+      (left === '{' && right === '}')
     );
   };
-  for (let i = 0; i < str.length; i++) {
-    const start = str[i];
-    if (leftArr.includes(start)) {
-      stack.push(start);
+  for (let i = 0; i < s.length; i++) {
+    const cur = s[i];
+    if (leftPar.includes(cur)) {
+      stack.push(cur);
     } else {
       const end = stack[stack.length - 1];
-      if (matchMethod(start, end)) {
+      if (matchMethod(end, cur)) {
         stack.pop();
       } else {
         return false;
@@ -68,7 +67,8 @@ const isValid = (str) => {
   return stack.length === 0;
 };
 
-console.log(isValid('()'));
-console.log(isValid('()[]{}'));
-console.log(isValid('(]'));
-console.log(isValid('([)]'));
+console.log(isValid('()')); // true
+console.log(isValid('()[]{}')); // true
+console.log(isValid('(]')); // false
+console.log(isValid('([)]')); // false
+console.log(isValid('{[]}')); // true
